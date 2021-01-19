@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { SliderData } from "../data/SliderData";
 import { Button } from "./Button";
@@ -126,6 +126,17 @@ const Hero = () => {
   const [current, setCurrent] = useState(0);
   const length = SliderData.length;
   const timeout = useRef(null);
+
+  useEffect(() => {
+    const nextSlide = () => {
+      setCurrent(current === length - 1 ? 0 : current + 1);
+    };
+    timeout.current = setTimeout(nextSlide, 3000);
+
+    return () => {
+      clearTimeout(timeout.current);
+    };
+  }, [current, length]);
 
   const nextSlide = () => {
     setCurrent(current === length - 1 ? 0 : current + 1);
